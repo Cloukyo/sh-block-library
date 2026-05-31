@@ -383,3 +383,19 @@ ${createCssVariables(settings)}
 ${css.trim()}
 </style>`;
 }
+
+export function createLeanCss(css: string) {
+  return css
+    .replace(/^\s*@import\s+[^;]+;\s*$/gim, "")
+    .replace(/:root\s*\{[^}]*\}/gim, "")
+    .replace(/\n{3,}/g, "\n\n")
+    .trim();
+}
+
+export function createLeanCombinedCode(html: string, css: string) {
+  return `${html.trim()}
+
+<style>
+${createLeanCss(css)}
+</style>`;
+}

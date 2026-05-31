@@ -2,12 +2,14 @@
 
 import { Expand, FileCode2, Monitor, Save, Smartphone, Tablet } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
-import { createCombinedCode, createCssVariables } from "@/lib/theme-presets";
+import { createCombinedCode, createLeanCombinedCode, createLeanCss } from "@/lib/theme-presets";
 import type { Block, DesignSettings } from "@/types/block";
 import { BlockPreview, type PreviewViewport } from "./BlockPreview";
 import { CopyButton } from "./CopyButton";
 
 type Tab = "Preview" | "HTML" | "CSS" | "Combined" | "Edit" | "Notes";
+type CssMode = "full" | "lean";
+type CombinedMode = "standalone" | "lean";
 
 type CodeTabsProps = {
   block: Block;
@@ -29,12 +31,18 @@ const previewViewports: PreviewViewport[] = [
 export function CodeTabs({ block, settings, isUserBlock = false, onSaveCode }: CodeTabsProps) {
   const [activeTab, setActiveTab] = useState<Tab>("Preview");
   const [viewportId, setViewportId] = useState("desktop");
+  const [cssMode, setCssMode] = useState<CssMode>("full");
+  const [combinedMode, setCombinedMode] = useState<CombinedMode>("standalone");
   const [draftHtml, setDraftHtml] = useState(block.html);
   const [draftCss, setDraftCss] = useState(block.css);
   const [saveMessage, setSaveMessage] = useState("");
   const selectedViewport = previewViewports.find((viewport) => viewport.id === viewportId) ?? previewViewports[2];
-  const cssWithVariables = useMemo(() => `${createCssVariables(settings)}\n\n${block.css.trim()}`, [block.css, settings]);
-  const combined = useMemo(() => createCombinedCode(block.html, block.css, settings), [block.css, block.html, settings]);
+  const fullCss = useMemo(() => block.css.trim(), [block.css]);
+  const leanCss = useMemo(() => createLeanCss(block.css), [block.css]);
+  const selectedCss = cssMode === "lean" ? leanCss : fullCss;
+  const standaloneCombined = useMemo(() => createCombinedCode(block.html, block.css, settings), [block.css, block.html, settings]);
+  const leanCombined = useMemo(() => createLeanCombinedCode(block.html, block.css), [block.css, block.html]);
+  const selectedCombined = combinedMode === "lean" ? leanCombined : standaloneCombined;
 
   useEffect(() => {
     setDraftHtml(block.html);
@@ -71,8 +79,8 @@ export function CodeTabs({ block, settings, isUserBlock = false, onSaveCode }: C
 
         <div className="flex flex-wrap gap-2">
           <CopyButton label="Copy HTML" value={block.html} />
-          <CopyButton label="Copy CSS" value={cssWithVariables} />
-          <CopyButton label="Copy Combined" value={combined} variant="primary" />
+          <CopyButton label={cssMode === "lean" ? "Copy Lean CSS" : "Copy Full CSS"} value={selectedCss} />
+          <CopyButton label={combinedMode === "lean" ? "Copy Lean Combined" : "Copy Standalone Combined"} value={selectedCombined} variant="primary" />
         </div>
       </div>
 
@@ -107,8 +115,46 @@ export function CodeTabs({ block, settings, isUserBlock = false, onSaveCode }: C
           </div>
         ) : null}
         {activeTab === "HTML" ? <CodeBlock value={block.html} /> : null}
-        {activeTab === "CSS" ? <CodeBlock value={cssWithVariables} /> : null}
-        {activeTab === "Combined" ? <CodeBlock value={combined} /> : null}
+        {activeTab === "CSS" ? (
+          <div className="space-y-3">
+            <div className="flex flex-wrap items-center justify-between gap-3">
+              <SegmentedControl
+                label="CSS export mode"
+                options={[
+                  { value: "full", label: "Full CSS" },
+                  { value: "lean", label: "Lean CSS" }
+                ]}
+                value={cssMode}
+                onChange={(value) => setCssMode(value as CssMode)}
+              />
+              <CopyButton label={cssMode === "lean" ? "Copy Lean CSS" : "Copy Full CSS"} value={selectedCss} />
+            </div>
+            <p className="text-sm leading-6 text-[#6d675f]">Lean assumes the Global Foundation CSS has already been added.</p>
+            <CodeBlock value={selectedCss} />
+          </div>
+        ) : null}
+        {activeTab === "Combined" ? (
+          <div className="space-y-3">
+            <div className="flex flex-wrap items-center justify-between gap-3">
+              <SegmentedControl
+                label="Combined export mode"
+                options={[
+                  { value: "standalone", label: "Standalone" },
+                  { value: "lean", label: "Lean" }
+                ]}
+                value={combinedMode}
+                onChange={(value) => setCombinedMode(value as CombinedMode)}
+              />
+              <CopyButton label={combinedMode === "lean" ? "Copy Lean Combined" : "Copy Standalone Combined"} value={selectedCombined} variant="primary" />
+            </div>
+            <p className="text-sm leading-6 text-[#6d675f]">
+              {combinedMode === "lean"
+                ? "Lean assumes the Global Foundation CSS has already been added."
+                : "Standalone is for testing a single block in Elementor."}
+            </p>
+            <CodeBlock value={selectedCombined} />
+          </div>
+        ) : null}
         {activeTab === "Edit" ? (
           <div className="space-y-4">
             <div className="rounded-lg border border-[#e4ded4] bg-white p-4">
@@ -164,6 +210,33 @@ export function CodeTabs({ block, settings, isUserBlock = false, onSaveCode }: C
         ) : null}
       </div>
     </section>
+  );
+}
+
+type SegmentedControlProps = {
+  label: string;
+  options: Array<{ value: string; label: string }>;
+  value: string;
+  onChange: (value: string) => void;
+};
+
+function SegmentedControl({ label, options, value, onChange }: SegmentedControlProps) {
+  return (
+    <div className="flex flex-wrap gap-1" aria-label={label}>
+      {options.map((option) => (
+        <button
+          key={option.value}
+          type="button"
+          onClick={() => onChange(option.value)}
+          className={[
+            "min-h-9 rounded-md px-3 text-xs font-semibold transition",
+            value === option.value ? "bg-ink text-white" : "border border-[#ded6ca] bg-white text-ink hover:border-bronze"
+          ].join(" ")}
+        >
+          {option.label}
+        </button>
+      ))}
+    </div>
   );
 }
 
