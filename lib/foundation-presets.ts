@@ -281,7 +281,7 @@ const nikitaPageHeroFoundationCss = `.ng-page-hero {
   }
 
   .ng-page-hero::before {
-    background-image: linear-gradient(180deg, rgba(255,254,250,0.98), rgba(255,254,250,0.95));
+    background-image: linear-gradient(180deg, rgba(255,254,250,0.98) 0%, rgba(255,254,250,0.92) 56%, rgba(255,254,250,0.82) 100%), var(--ng-hero-image);
   }
 }`;
 

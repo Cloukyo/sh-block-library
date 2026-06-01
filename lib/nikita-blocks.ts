@@ -279,7 +279,7 @@ const pageHeroCss = `${nikitaBaseCss}
   }
 
   .ng-page-hero::before {
-    background-image: linear-gradient(180deg, rgba(255,254,250,0.98), rgba(255,254,250,0.95));
+    background-image: linear-gradient(180deg, rgba(255,254,250,0.98) 0%, rgba(255,254,250,0.92) 56%, rgba(255,254,250,0.82) 100%), var(--ng-hero-image);
   }
 }`;
 
@@ -775,7 +775,9 @@ export const nikitaBlocks: Block[] = [
 }
 @media (max-width: 820px) {
   .ng-home-hero__bg {
-    display: none;
+    display: block;
+    min-height: 520px;
+    background-image: linear-gradient(180deg, rgba(255,254,250,0.98) 0%, rgba(255,254,250,0.93) 58%, rgba(255,254,250,0.84) 100%), url("${clinicImage}");
   }
   .ng-home-hero__content {
     min-height: auto;
