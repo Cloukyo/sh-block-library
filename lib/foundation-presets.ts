@@ -434,6 +434,216 @@ export const dyFoundationCss = `.dy-section {
   }
 }`;
 
+export const samimFoundationCss = `.sm-section {
+  --sm-bg: #f7f9f8;
+  --sm-surface: #ffffff;
+  --sm-ink: #102426;
+  --sm-text: #405456;
+  --sm-muted: #66797b;
+  --sm-line: #d7e1df;
+  --sm-accent: #0f6b73;
+  --sm-accent-soft: #dcebec;
+  --sm-warm: #c99564;
+  --sm-container: min(1180px, calc(100% - 48px));
+  --sm-radius: 8px;
+  background: var(--sm-bg);
+  color: var(--sm-text);
+  font-family: var(--sh-font-body);
+  padding: var(--sh-section-padding);
+}
+
+.sm-section--surface {
+  background: var(--sm-surface);
+}
+
+.sm-shell {
+  width: var(--sm-container);
+  margin: 0 auto;
+}
+
+.sm-kicker {
+  margin: 0 0 14px;
+  color: var(--sm-accent);
+  font-family: var(--sh-font-body);
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  line-height: 1.35;
+  text-transform: uppercase;
+}
+
+.sm-title,
+.sm-display {
+  margin: 0;
+  color: var(--sm-ink);
+  font-family: var(--sh-font-heading);
+  font-weight: 650;
+  letter-spacing: 0;
+}
+
+.sm-display {
+  max-width: 920px;
+  font-size: clamp(44px, 6.4vw, 82px);
+  line-height: 0.98;
+}
+
+.sm-title {
+  max-width: 820px;
+  font-size: clamp(34px, 4.8vw, 58px);
+  line-height: 1.05;
+}
+
+.sm-lead {
+  max-width: 760px;
+  margin: 24px 0 0;
+  color: var(--sm-text);
+  font-size: clamp(17px, 1.7vw, 21px);
+  line-height: 1.75;
+}
+
+.sm-copy {
+  margin: 16px 0 0;
+  color: var(--sm-text);
+  font-size: 16px;
+  line-height: 1.75;
+}
+
+.sm-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 30px;
+}
+
+.sm-button,
+.sm-button-outline,
+.sm-text-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 48px;
+  font-family: var(--sh-font-body);
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-decoration: none;
+  text-transform: uppercase;
+}
+
+.sm-button {
+  border: 1px solid var(--sm-accent);
+  border-radius: var(--sm-radius);
+  background: var(--sm-accent);
+  color: #ffffff;
+  padding: 14px 24px;
+}
+
+.sm-button-outline {
+  border: 1px solid var(--sm-line);
+  border-radius: var(--sm-radius);
+  background: transparent;
+  color: var(--sm-ink);
+  padding: 14px 24px;
+}
+
+.sm-text-link {
+  min-height: 0;
+  border-bottom: 1px solid var(--sm-warm);
+  color: var(--sm-ink);
+  padding: 0 0 4px;
+}
+
+.sm-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 18px;
+}
+
+.sm-grid--two {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.sm-card {
+  border: 1px solid var(--sm-line);
+  border-radius: var(--sm-radius);
+  background: var(--sm-surface);
+  padding: clamp(22px, 3vw, 34px);
+}
+
+.sm-card h3 {
+  margin: 0;
+  color: var(--sm-ink);
+  font-family: var(--sh-font-heading);
+  font-size: clamp(22px, 2.2vw, 30px);
+  font-weight: 650;
+  letter-spacing: 0;
+  line-height: 1.12;
+}
+
+.sm-card p {
+  margin: 14px 0 0;
+  color: var(--sm-text);
+  font-size: 15px;
+  line-height: 1.72;
+}
+
+.sm-meta-list {
+  display: grid;
+  gap: 12px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.sm-meta-list li {
+  border-top: 1px solid var(--sm-line);
+  padding-top: 12px;
+  color: var(--sm-ink);
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.sm-image-frame {
+  margin: 0;
+  overflow: hidden;
+  border: 1px solid var(--sm-line);
+  border-radius: var(--sm-radius);
+  background: var(--sm-surface);
+}
+
+.sm-image-frame img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 4 / 5;
+  object-fit: cover;
+}
+
+@media (max-width: 860px) {
+  .sm-section {
+    padding: 64px 0;
+  }
+
+  .sm-shell {
+    width: min(100% - 32px, 1180px);
+  }
+
+  .sm-grid,
+  .sm-grid--two {
+    grid-template-columns: 1fr;
+  }
+
+  .sm-actions {
+    display: grid;
+  }
+
+  .sm-button,
+  .sm-button-outline {
+    width: 100%;
+  }
+}`;
+
 export const foundationPresets: Record<FoundationId, FoundationPreset> = {
   "sh-foundation": {
     id: "sh-foundation",
@@ -456,8 +666,8 @@ export const foundationPresets: Record<FoundationId, FoundationPreset> = {
   "sm-foundation": {
     id: "sm-foundation",
     name: "Samim Foundation",
-    css: "",
-    removeFromBlockCss: []
+    css: samimFoundationCss,
+    removeFromBlockCss: [samimFoundationCss]
   }
 };
 

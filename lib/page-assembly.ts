@@ -125,6 +125,27 @@ export const pageTemplates: PageTemplate[] = [
         "dy-footer"
       ]
     })
+  },
+  {
+    ...createBuiltInTemplate({
+      id: "samim-home-draft",
+      name: "Samim Home Draft",
+      description: "First-pass homepage assembly for the Samim Surgeon Pack.",
+      sourceProject: "Samim Surgeon Pack",
+      foundationId: "sm-foundation",
+      tags: ["samim", "surgeon", "homepage", "draft"],
+      blockIds: [
+        "samim-homepage-hero",
+        "samim-credentials-authority-strip",
+        "samim-procedures-grid",
+        "samim-consultant-bio",
+        "samim-consultation-journey",
+        "samim-results-before-after-placeholder",
+        "samim-reviews-testimonials",
+        "samim-research-publications-section",
+        "samim-contact-cta"
+      ]
+    })
   }
 ];
 
