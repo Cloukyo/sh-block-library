@@ -2,7 +2,7 @@
 
 import { Expand, FileCode2, Monitor, Save, Smartphone, Tablet } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
-import { createCombinedCode, createLeanCombinedCode, createLeanCss } from "@/lib/theme-presets";
+import { createLeanCombinedCode, createLeanCss, createStandaloneCombinedCode, getBlockFoundationId, getFullCss } from "@/lib/foundation-presets";
 import type { Block, DesignSettings } from "@/types/block";
 import { BlockPreview, type PreviewViewport } from "./BlockPreview";
 import { CopyButton } from "./CopyButton";
@@ -37,10 +37,11 @@ export function CodeTabs({ block, settings, isUserBlock = false, onSaveCode }: C
   const [draftCss, setDraftCss] = useState(block.css);
   const [saveMessage, setSaveMessage] = useState("");
   const selectedViewport = previewViewports.find((viewport) => viewport.id === viewportId) ?? previewViewports[2];
-  const fullCss = useMemo(() => block.css.trim(), [block.css]);
+  const foundationId = getBlockFoundationId(block);
+  const fullCss = useMemo(() => getFullCss(block.css, settings, foundationId), [block.css, foundationId, settings]);
   const leanCss = useMemo(() => createLeanCss(block.css), [block.css]);
   const selectedCss = cssMode === "lean" ? leanCss : fullCss;
-  const standaloneCombined = useMemo(() => createCombinedCode(block.html, block.css, settings), [block.css, block.html, settings]);
+  const standaloneCombined = useMemo(() => createStandaloneCombinedCode(block.html, block.css, settings, foundationId), [block.css, block.html, foundationId, settings]);
   const leanCombined = useMemo(() => createLeanCombinedCode(block.html, block.css), [block.css, block.html]);
   const selectedCombined = combinedMode === "lean" ? leanCombined : standaloneCombined;
 
@@ -78,9 +79,9 @@ export function CodeTabs({ block, settings, isUserBlock = false, onSaveCode }: C
         </div>
 
         <div className="flex flex-wrap gap-2">
-          <CopyButton label="Copy HTML" value={block.html} />
-          <CopyButton label={cssMode === "lean" ? "Copy Lean CSS" : "Copy Full CSS"} value={selectedCss} />
-          <CopyButton label={combinedMode === "lean" ? "Copy Lean Combined" : "Copy Standalone Combined"} value={selectedCombined} variant="primary" />
+          <CopyButton label="Copy HTML" textToCopy={block.html} />
+          <CopyButton label={cssMode === "lean" ? "Copy Lean CSS" : "Copy Full CSS"} textToCopy={selectedCss} />
+          <CopyButton label={combinedMode === "lean" ? "Copy Lean Combined" : "Copy Standalone Combined"} textToCopy={selectedCombined} variant="primary" />
         </div>
       </div>
 
@@ -127,7 +128,7 @@ export function CodeTabs({ block, settings, isUserBlock = false, onSaveCode }: C
                 value={cssMode}
                 onChange={(value) => setCssMode(value as CssMode)}
               />
-              <CopyButton label={cssMode === "lean" ? "Copy Lean CSS" : "Copy Full CSS"} value={selectedCss} />
+              <CopyButton label={cssMode === "lean" ? "Copy Lean CSS" : "Copy Full CSS"} textToCopy={selectedCss} />
             </div>
             <p className="text-sm leading-6 text-[#6d675f]">Lean assumes the Global Foundation CSS has already been added.</p>
             <CodeBlock value={selectedCss} />
@@ -145,7 +146,7 @@ export function CodeTabs({ block, settings, isUserBlock = false, onSaveCode }: C
                 value={combinedMode}
                 onChange={(value) => setCombinedMode(value as CombinedMode)}
               />
-              <CopyButton label={combinedMode === "lean" ? "Copy Lean Combined" : "Copy Standalone Combined"} value={selectedCombined} variant="primary" />
+              <CopyButton label={combinedMode === "lean" ? "Copy Lean Combined" : "Copy Standalone Combined"} textToCopy={selectedCombined} variant="primary" />
             </div>
             <p className="text-sm leading-6 text-[#6d675f]">
               {combinedMode === "lean"

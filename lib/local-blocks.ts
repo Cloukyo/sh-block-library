@@ -1,4 +1,5 @@
 import type { Block, BlockQaChecklist, BlockStatus, UserBlock } from "@/types/block";
+import { getBlockFoundationId } from "@/lib/foundation-presets";
 
 const STORAGE_KEY = "sh-block-library:user-blocks";
 const ASSEMBLY_STORAGE_KEY = "sh-block-library:page-assembly";
@@ -14,13 +15,15 @@ export type LocalLibraryBackup = {
 const statuses: BlockStatus[] = ["Draft", "Needs Review", "Elementor Tested", "Approved"];
 
 export const defaultQaChecklist: BlockQaChecklist = {
+  pastedIntoElementor: false,
   desktopChecked: false,
+  tabletChecked: false,
   mobileChecked: false,
-  elementorPasteTested: false,
-  scopedClassesChecked: false,
-  cssVariablesChecked: false,
-  imagePlaceholdersReviewed: false,
-  ctaLinksReviewed: false
+  ctaLinksChecked: false,
+  imagesReplaced: false,
+  formBehaviourChecked: false,
+  cssConflictChecked: false,
+  approved: false
 };
 
 function isRecord(value: unknown): value is Record<string, unknown> {
@@ -47,14 +50,25 @@ function isUserBlock(value: unknown): value is UserBlock {
 }
 
 function normalizeUserBlock(block: UserBlock): UserBlock {
+  const existingQa: Record<string, unknown> = isRecord(block.qa) ? block.qa : {};
   return {
     ...block,
+    foundationId: getBlockFoundationId(block),
     status: statuses.includes(block.status as BlockStatus) ? block.status : "Draft",
+    elementorQaStatus: normalizeQaStatus(block.elementorQaStatus),
     qa: {
       ...defaultQaChecklist,
-      ...(isRecord(block.qa) ? block.qa : {})
+      ...(typeof existingQa.elementorPasteTested === "boolean" ? { pastedIntoElementor: existingQa.elementorPasteTested } : {}),
+      ...(typeof existingQa.ctaLinksReviewed === "boolean" ? { ctaLinksChecked: existingQa.ctaLinksReviewed } : {}),
+      ...(typeof existingQa.imagePlaceholdersReviewed === "boolean" ? { imagesReplaced: existingQa.imagePlaceholdersReviewed } : {}),
+      ...(typeof existingQa.scopedClassesChecked === "boolean" ? { cssConflictChecked: existingQa.scopedClassesChecked } : {}),
+      ...existingQa
     }
   };
+}
+
+function normalizeQaStatus(status: unknown) {
+  return status === "Pass" || status === "Warnings" || status === "Needs Review" ? status : "Needs Review";
 }
 
 export function createUserBlock(block: Omit<Block, "id">): UserBlock {
@@ -62,7 +76,9 @@ export function createUserBlock(block: Omit<Block, "id">): UserBlock {
   return {
     ...block,
     id: `local-${crypto.randomUUID()}`,
+    foundationId: getBlockFoundationId(block),
     status: block.status ?? "Draft",
+    elementorQaStatus: block.elementorQaStatus ?? "Needs Review",
     qa: defaultQaChecklist,
     createdAt: now,
     updatedAt: now
@@ -73,7 +89,9 @@ export function updateUserBlock(existing: UserBlock, block: Omit<Block, "id">, q
   return {
     ...existing,
     ...block,
+    foundationId: block.foundationId ?? getBlockFoundationId(block),
     status: block.status ?? existing.status ?? "Draft",
+    elementorQaStatus: block.elementorQaStatus ?? existing.elementorQaStatus ?? "Needs Review",
     qa: qa ?? existing.qa ?? defaultQaChecklist,
     updatedAt: new Date().toISOString()
   };
@@ -165,6 +183,7 @@ export function cloneUserBlock(block: Block, namePrefix = "Copy of "): UserBlock
     id: `local-${crypto.randomUUID()}`,
     name: `${namePrefix}${block.name}`,
     status: "Draft",
+    elementorQaStatus: block.elementorQaStatus ?? "Needs Review",
     qa: defaultQaChecklist,
     createdAt: now,
     updatedAt: now

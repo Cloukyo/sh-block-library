@@ -373,29 +373,3 @@ export function createFontImport(settings: Pick<DesignSettings, "headingFont" | 
 
   return `@import url("https://fonts.googleapis.com/css2?${families}&display=swap");`;
 }
-
-export function createCombinedCode(html: string, css: string, settings: DesignSettings) {
-  return `${html.trim()}
-
-<style>
-${createCssVariables(settings)}
-
-${css.trim()}
-</style>`;
-}
-
-export function createLeanCss(css: string) {
-  return css
-    .replace(/^\s*@import\s+[^;]+;\s*$/gim, "")
-    .replace(/:root\s*\{[^}]*\}/gim, "")
-    .replace(/\n{3,}/g, "\n\n")
-    .trim();
-}
-
-export function createLeanCombinedCode(html: string, css: string) {
-  return `${html.trim()}
-
-<style>
-${createLeanCss(css)}
-</style>`;
-}

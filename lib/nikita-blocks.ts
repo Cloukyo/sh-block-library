@@ -1,7 +1,8 @@
+import { stripFoundationCss } from "@/lib/foundation-presets";
 import type { Block, BlockCategory } from "@/types/block";
 
-const clinicImage = "http://salmanh1.sg-host.com/wp-content/uploads/2026/05/clinic-hero-1600px-q72.webp";
-const portraitImage = "http://salmanh1.sg-host.com/wp-content/uploads/2026/05/nikita-grover-portrait.png";
+const clinicImage = "https://salmanh1.sg-host.com/wp-content/uploads/2026/05/clinic-hero-1600px-q72.webp";
+const portraitImage = "https://salmanh1.sg-host.com/wp-content/uploads/2026/05/nikita-grover-portrait.png";
 
 const nikitaTags = ["nikita", "longevity", "functional-medicine", "clinic", "premium", "bronze"];
 
@@ -136,6 +137,7 @@ const nikitaBaseCss = `.ng-eyebrow {
 
 .ng-card,
 .ng-panel {
+  background: var(--sh-bg);
   background: color-mix(in srgb, var(--sh-bg) 78%, white);
   border: 1px solid var(--sh-accent-soft);
 }
@@ -284,8 +286,10 @@ const pageHeroCss = `${nikitaBaseCss}
 function b(block: Omit<Block, "client" | "style">): Block {
   return {
     ...block,
+    css: stripFoundationCss(block.css, "nikita-foundation"),
     client: "Nikita Grover",
     style: "Nikita Bronze",
+    foundationId: "nikita-foundation",
     sourceProject: block.sourceProject ?? "Nikita Grover Staging Site",
     sourceUrl: block.sourceUrl ?? "https://salmanh1.sg-host.com/",
     version: block.version ?? "v1",
@@ -378,6 +382,7 @@ function ctaBlock(id: string, name: string, copy = nextStepCopy): Block {
   gap: 36px;
   align-items: end;
   border: 1px solid var(--sh-accent-soft);
+  background: var(--sh-surface);
   background: color-mix(in srgb, var(--sh-surface) 54%, white);
   padding: clamp(32px, 5vw, 64px);
 }
@@ -430,6 +435,7 @@ export const nikitaBlocks: Block[] = [
 </header>`,
     css: `${nikitaBaseCss}
 .ng-site-header {
+  background: var(--sh-bg);
   background: color-mix(in srgb, var(--sh-bg) 92%, transparent);
   border-bottom: 1px solid var(--sh-accent-soft);
   color: var(--sh-heading);
@@ -643,6 +649,7 @@ export const nikitaBlocks: Block[] = [
 .ng-footer-links a,
 .ng-footer-links span,
 .ng-footer-bottom {
+  color: var(--sh-button-text);
   color: color-mix(in srgb, var(--sh-button-text) 78%, transparent);
   line-height: 1.7;
 }
@@ -658,6 +665,7 @@ export const nikitaBlocks: Block[] = [
   justify-content: space-between;
   gap: 24px;
   margin-top: 56px;
+  border-top: 1px solid var(--sh-accent-soft);
   border-top: 1px solid color-mix(in srgb, var(--sh-button-text) 18%, transparent);
   padding-top: 24px;
   font-size: 13px;
@@ -734,6 +742,7 @@ export const nikitaBlocks: Block[] = [
   z-index: 1;
   border-top: 1px solid var(--sh-accent-soft);
   border-bottom: 1px solid var(--sh-accent-soft);
+  background: var(--sh-bg);
   background: color-mix(in srgb, var(--sh-bg) 92%, white);
 }
 .ng-home-trust ul {

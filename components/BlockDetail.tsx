@@ -1,7 +1,11 @@
 "use client";
 
-import { CopyPlus, Pencil, Trash2 } from "lucide-react";
-import type { Block, BlockQaChecklist, DesignSettings, UserBlock } from "@/types/block";
+import { ChevronDown, CopyPlus, Palette, Pencil, SlidersHorizontal, Trash2 } from "lucide-react";
+import type { ReactNode } from "react";
+import { useEffect, useMemo, useState } from "react";
+import { BlockContentEditor } from "@/components/BlockContentEditor";
+import { ElementorQaPanel } from "@/components/ElementorQaPanel";
+import type { Block, BlockQaChecklist, DesignSettings, ElementorQaStatus, UserBlock } from "@/types/block";
 import { CodeTabs } from "./CodeTabs";
 import { DesignControls } from "./DesignControls";
 
@@ -15,19 +19,10 @@ type BlockDetailProps = {
   onSaveCode: (block: Block, html: string, css: string) => void;
   onEditMetadata: (block: Block) => void;
   onDuplicate: (block: Block) => void;
+  onDuplicateEdited: (block: Block, html: string, css: string) => void;
   userBlock?: UserBlock;
-  onQaChange: (block: UserBlock, qa: BlockQaChecklist) => void;
+  onQaChange: (block: Block, qa: BlockQaChecklist, status: ElementorQaStatus) => void;
 };
-
-const qaItems: Array<[keyof BlockQaChecklist, string]> = [
-  ["desktopChecked", "Desktop checked"],
-  ["mobileChecked", "Mobile checked"],
-  ["elementorPasteTested", "Elementor paste tested"],
-  ["scopedClassesChecked", "Scoped classes checked"],
-  ["cssVariablesChecked", "CSS variables checked"],
-  ["imagePlaceholdersReviewed", "Image placeholders reviewed"],
-  ["ctaLinksReviewed", "CTA links reviewed"]
-];
 
 export function BlockDetail({
   block,
@@ -39,9 +34,19 @@ export function BlockDetail({
   onSaveCode,
   onEditMetadata,
   onDuplicate,
+  onDuplicateEdited,
   userBlock,
   onQaChange
 }: BlockDetailProps) {
+  const [contentHtml, setContentHtml] = useState(block.html);
+  const [contentCss, setContentCss] = useState(block.css);
+  const contentBlock = useMemo(() => ({ ...block, html: contentHtml, css: contentCss }), [block, contentCss, contentHtml]);
+
+  useEffect(() => {
+    setContentHtml(block.html);
+    setContentCss(block.css);
+  }, [block.css, block.html, block.id]);
+
   return (
     <div className="space-y-4">
       <section className="rounded-lg border border-[#e4ded4] bg-[#fffdfa] p-5">
@@ -123,37 +128,53 @@ export function BlockDetail({
         </div>
       </section>
 
-      <DesignControls settings={settings} onChange={onSettingsChange} />
-      {userBlock ? (
-        <section className="rounded-lg border border-[#e4ded4] bg-[#fffdfa] p-4">
-          <h3 className="text-sm font-bold uppercase tracking-[0.16em] text-[#5c5750]">Block QA Checklist</h3>
-          <div className="mt-3 grid gap-2 sm:grid-cols-2 xl:grid-cols-3">
-            {qaItems.map(([key, label]) => (
-              <label key={key} className="flex min-h-10 items-center gap-2 rounded-md border border-[#ebe4da] bg-white px-3 text-sm font-semibold text-[#615b54]">
-                <input
-                  type="checkbox"
-                  checked={Boolean(userBlock.qa?.[key])}
-                  onChange={(event) =>
-                    onQaChange(userBlock, {
-                      desktopChecked: false,
-                      mobileChecked: false,
-                      elementorPasteTested: false,
-                      scopedClassesChecked: false,
-                      cssVariablesChecked: false,
-                      imagePlaceholdersReviewed: false,
-                      ctaLinksReviewed: false,
-                      ...userBlock.qa,
-                      [key]: event.target.checked
-                    })
-                  }
-                />
-                {label}
-              </label>
-            ))}
-          </div>
-        </section>
-      ) : null}
-      <CodeTabs block={block} settings={settings} isUserBlock={isUserBlock} onSaveCode={onSaveCode} />
+      <CodeTabs block={contentBlock} settings={settings} isUserBlock={isUserBlock} onSaveCode={onSaveCode} />
+      <AccordionPanel title="Edit Content" description="Text, links and images" icon={<Pencil className="h-4 w-4" aria-hidden="true" />}>
+        <BlockContentEditor
+          block={block}
+          html={contentHtml}
+          css={contentCss}
+          onHtmlChange={setContentHtml}
+          onCssChange={setContentCss}
+          onReset={() => {
+            setContentHtml(block.html);
+            setContentCss(block.css);
+          }}
+          onSaveAsCustom={() => onSaveCode(block, contentHtml, contentCss)}
+          onDuplicateAndEdit={() => onDuplicateEdited(block, contentHtml, contentCss)}
+        />
+      </AccordionPanel>
+      <AccordionPanel title="Design Controls" description="Palette, fonts and spacing" icon={<Palette className="h-4 w-4" aria-hidden="true" />}>
+        <DesignControls settings={settings} onChange={onSettingsChange} />
+      </AccordionPanel>
+      <AccordionPanel title="Elementor QA" description="Paste safety checks and checklist" icon={<SlidersHorizontal className="h-4 w-4" aria-hidden="true" />}>
+        <ElementorQaPanel
+          block={contentBlock}
+          qa={userBlock?.qa}
+          qaStatus={userBlock?.elementorQaStatus}
+          onChange={(qa, status) => onQaChange(contentBlock, qa, status)}
+        />
+      </AccordionPanel>
     </div>
+  );
+}
+
+function AccordionPanel({ title, description, icon, children }: { title: string; description: string; icon: ReactNode; children: ReactNode }) {
+  return (
+    <details className="group rounded-lg border border-[#e4ded4] bg-[#fffdfa]">
+      <summary className="flex cursor-pointer list-none items-center justify-between gap-3 px-4 py-3">
+        <span className="flex min-w-0 items-center gap-3">
+          <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-md border border-[#ded6ca] bg-white text-ink">
+            {icon}
+          </span>
+          <span className="min-w-0">
+            <span className="block text-sm font-bold uppercase tracking-[0.16em] text-[#5c5750]">{title}</span>
+            <span className="block truncate text-xs text-[#746d65]">{description}</span>
+          </span>
+        </span>
+        <ChevronDown className="h-4 w-4 shrink-0 text-[#746d65] transition group-open:rotate-180" aria-hidden="true" />
+      </summary>
+      <div className="border-t border-[#e4ded4] p-4">{children}</div>
+    </details>
   );
 }

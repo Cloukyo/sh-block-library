@@ -1,6 +1,8 @@
 "use client";
 
 import type { Block } from "@/types/block";
+import { QaBadge } from "@/components/ElementorQaPanel";
+import { analyzeElementorQa } from "@/lib/elementor-qa";
 
 type BlockCardProps = {
   block: Block;
@@ -9,6 +11,8 @@ type BlockCardProps = {
 };
 
 export function BlockCard({ block, selected, onSelect }: BlockCardProps) {
+  const qaStatus = block.elementorQaStatus ?? analyzeElementorQa({ html: block.html, css: block.css, category: block.category }).status;
+
   return (
     <button
       type="button"
@@ -37,6 +41,7 @@ export function BlockCard({ block, selected, onSelect }: BlockCardProps) {
             {block.status}
           </span>
         ) : null}
+        <QaBadge status={qaStatus} />
       </div>
       <h2 className="text-base font-semibold text-ink">{block.name}</h2>
       <p className="mt-2 min-h-12 text-sm leading-6 text-[#69645e]">{block.description}</p>

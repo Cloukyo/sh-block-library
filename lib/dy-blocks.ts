@@ -1,3 +1,4 @@
+import { stripFoundationCss } from "@/lib/foundation-presets";
 import type { Block } from "@/types/block";
 
 const logoImage = "https://www.dyskinclinic.com/wp-content/uploads/2023/10/DYSkin-logo.png";
@@ -154,8 +155,10 @@ const dyBaseCss = `.dy-section {
 function dy(block: Omit<Block, "client" | "style" | "sourceProject" | "version" | "status">): Block {
   return {
     ...block,
+    css: stripFoundationCss(block.css, "dy-foundation"),
     client: "Dominic",
     style: "DY Skin Clinic",
+    foundationId: "dy-foundation",
     sourceProject: "DY Skin Clinic",
     sourceUrl: "https://www.dyskinclinic.com/",
     version: "v1",

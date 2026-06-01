@@ -32,6 +32,7 @@ export type Block = {
   client: string;
   style: string;
   useCase?: string;
+  foundationId?: FoundationId;
   html: string;
   css: string;
   notes: string;
@@ -41,7 +42,10 @@ export type Block = {
   sourceSection?: string;
   version?: string;
   status?: BlockStatus;
+  elementorQaStatus?: ElementorQaStatus;
 };
+
+export type FoundationId = "sh-foundation" | "nikita-foundation" | "dy-foundation" | "sm-foundation";
 
 export type UserBlock = Block & {
   createdAt: string;
@@ -50,15 +54,44 @@ export type UserBlock = Block & {
 };
 
 export type BlockStatus = "Draft" | "Needs Review" | "Elementor Tested" | "Approved";
+export type ElementorQaStatus = "Pass" | "Warnings" | "Needs Review";
 
 export type BlockQaChecklist = {
+  pastedIntoElementor: boolean;
   desktopChecked: boolean;
+  tabletChecked: boolean;
   mobileChecked: boolean;
-  elementorPasteTested: boolean;
-  scopedClassesChecked: boolean;
-  cssVariablesChecked: boolean;
-  imagePlaceholdersReviewed: boolean;
-  ctaLinksReviewed: boolean;
+  ctaLinksChecked: boolean;
+  imagesReplaced: boolean;
+  formBehaviourChecked: boolean;
+  cssConflictChecked: boolean;
+  approved: boolean;
+};
+
+export type PageTemplateChecklist = {
+  previewChecked: boolean;
+  desktopChecked: boolean;
+  tabletChecked: boolean;
+  mobileChecked: boolean;
+  elementorPasted: boolean;
+  ctaLinksChecked: boolean;
+  imagesReplaced: boolean;
+  approved: boolean;
+};
+
+export type PageTemplate = {
+  id: string;
+  name: string;
+  description: string;
+  sourceProject: string;
+  foundationId: FoundationId;
+  blockIds: string[];
+  tags: string[];
+  status: BlockStatus;
+  checklist: PageTemplateChecklist;
+  createdAt: string;
+  updatedAt: string;
+  builtIn?: boolean;
 };
 
 export type ButtonStyle = "Pill" | "Soft rounded" | "Sharp editorial" | "Outline" | "Minimal text link";

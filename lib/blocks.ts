@@ -11,6 +11,7 @@ const genericBlocks: Block[] = [
     tags: ["foundation", "css variables", "elementor", "starter"],
     client: "SH Digital Marketing",
     style: "Universal",
+    foundationId: "sh-foundation",
     useCase: "Paste once above a group of blocks or include in each combined export.",
     html: `<div class="sh-foundation-note" aria-label="SH Block Library foundation notice">
   <p>SH Foundation CSS is designed to support modular Elementor HTML sections. Paste the CSS into a page-level HTML widget or keep using the Combined tab for self-contained blocks.</p>
@@ -35,6 +36,29 @@ const genericBlocks: Block[] = [
       "Use this as a reference foundation. The Combined tab on every block already includes the selected variables, so you do not need to paste this separately for a single Elementor HTML widget."
   },
   {
+    id: "nikita-foundation-css",
+    name: "Nikita Foundation CSS",
+    category: "Global Foundation",
+    description: "Dedicated Nikita Grover foundation for shared ng- typography, buttons, sections, grids, cards and responsive defaults.",
+    tags: ["foundation", "nikita", "bronze", "ng", "elementor"],
+    client: "Nikita Grover",
+    style: "Nikita Bronze",
+    foundationId: "nikita-foundation",
+    sourceProject: "Nikita Grover Staging Site",
+    sourceUrl: "https://salmanh1.sg-host.com/",
+    status: "Needs Review",
+    useCase: "Paste the Full CSS output once into Elementor before using Lean Nikita block exports.",
+    html: `<section class="ng-section" aria-labelledby="nikita-foundation-css-title">
+  <div class="ng-shell">
+    <p class="ng-eyebrow">Foundation CSS</p>
+    <h2 id="nikita-foundation-css-title" class="ng-section-title">Nikita Foundation CSS</h2>
+    <p class="ng-lead">Use the Full CSS output for shared Nikita typography, buttons, containers, cards, image frames and responsive defaults.</p>
+  </div>
+</section>`,
+    css: "",
+    notes: "The Full CSS tab outputs the complete Nikita foundation. Lean Nikita block exports assume this foundation has already been added to the Elementor page."
+  },
+  {
     id: "premium-clinic-hero",
     name: "Premium Clinic Hero",
     category: "Heroes",
@@ -42,6 +66,7 @@ const genericBlocks: Block[] = [
     tags: ["hero", "clinic", "cta", "premium", "generic"],
     client: "Reusable",
     style: "Premium Medical",
+    foundationId: "sh-foundation",
     useCase: "Homepage or service page opening section for future non-Nikita clients.",
     html: `<section class="sh-clinic-hero" aria-labelledby="sh-clinic-hero-title">
   <div class="sh-clinic-hero__inner">

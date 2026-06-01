@@ -21,6 +21,7 @@ const emptyValues: BlockFormValues = {
   tags: [],
   client: "",
   style: "",
+  foundationId: "sh-foundation",
   html: "",
   css: "",
   notes: ""
@@ -39,6 +40,7 @@ export function BlockFormModal({ block, mode, onClose, onSave }: BlockFormModalP
       tags: block.tags,
       client: block.client,
       style: block.style,
+      foundationId: block.foundationId,
       useCase: block.useCase,
       html: block.html,
       css: block.css,
@@ -124,6 +126,9 @@ export function BlockFormModal({ block, mode, onClose, onSave }: BlockFormModalP
 
           <TextArea label="Description" value={values.description} onChange={(value) => update("description", value)} rows={3} required />
           <TextField label="Tags, comma-separated" value={tagText} onChange={setTagText} placeholder="hero, nikita, longevity" />
+          <p className="rounded-md border border-[#eee6dc] bg-[#fbf8f2] px-4 py-3 text-sm leading-6 text-[#6d675f]">
+            For better editor labels, add data-editable attributes to important text, links and images.
+          </p>
 
           <div className="grid gap-4 lg:grid-cols-2">
             <TextArea label="HTML" value={values.html} onChange={(value) => update("html", value)} rows={13} required code />

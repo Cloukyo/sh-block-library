@@ -1,6 +1,6 @@
 "use client";
 
-import { createCssVariables } from "@/lib/theme-presets";
+import { getBlockFoundationId, getFullCss } from "@/lib/foundation-presets";
 import type { Block, DesignSettings } from "@/types/block";
 
 export type PreviewViewport = {
@@ -17,16 +17,16 @@ type BlockPreviewProps = {
 };
 
 export function BlockPreview({ block, settings, viewport }: BlockPreviewProps) {
+  const foundationId = getBlockFoundationId(block);
   const srcDoc = `<!doctype html>
 <html>
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <style>
-    ${createCssVariables(settings)}
+    ${getFullCss(block.css, settings, foundationId)}
     * { box-sizing: border-box; }
     body { margin: 0; background: ${settings.customColors.bg}; }
-    ${block.css}
   </style>
 </head>
 <body>${block.html}</body>
