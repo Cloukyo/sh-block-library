@@ -435,15 +435,15 @@ export const dyFoundationCss = `.dy-section {
 }`;
 
 export const samimFoundationCss = `.sm-section {
-  --sm-bg: #f7f9f8;
-  --sm-surface: #ffffff;
-  --sm-ink: #102426;
-  --sm-text: #405456;
-  --sm-muted: #66797b;
-  --sm-line: #d7e1df;
-  --sm-accent: #0f6b73;
-  --sm-accent-soft: #dcebec;
-  --sm-warm: #c99564;
+  --sm-bg: var(--sh-bg);
+  --sm-surface: var(--sh-surface);
+  --sm-ink: var(--sh-heading);
+  --sm-text: var(--sh-text);
+  --sm-muted: var(--sh-muted);
+  --sm-line: var(--sh-accent-soft);
+  --sm-accent: var(--sh-accent);
+  --sm-accent-soft: var(--sh-accent-soft);
+  --sm-warm: var(--sh-accent);
   --sm-container: min(1180px, calc(100% - 48px));
   --sm-radius: 8px;
   background: var(--sm-bg);
