@@ -1,8 +1,8 @@
 import { stripFoundationCss } from "@/lib/foundation-presets";
 import type { Block, BlockCategory } from "@/types/block";
 
-const clinicImage = "https://salmanh1.sg-host.com/wp-content/uploads/2026/05/clinic-hero-1600px-q72.webp";
-const portraitImage = "https://salmanh1.sg-host.com/wp-content/uploads/2026/05/nikita-grover-portrait.png";
+const clinicImage = "https://placehold.co/1600x1000/e8ded2/1f211d?text=Clinic+Hero+Image";
+const portraitImage = "https://placehold.co/900x1100/e8ded2/1f211d?text=Dr+Nikita+Grover";
 
 const nikitaTags = ["nikita", "longevity", "functional-medicine", "clinic", "premium", "bronze"];
 
