@@ -33,6 +33,10 @@ export type Block = {
   style: string;
   useCase?: string;
   foundationId?: FoundationId;
+  foundationPreset?: FoundationId;
+  exportNotes?: string;
+  blockCss?: string;
+  foundationCss?: string;
   html: string;
   css: string;
   notes: string;

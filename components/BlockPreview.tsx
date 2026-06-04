@@ -29,7 +29,15 @@ export function BlockPreview({ block, settings, viewport }: BlockPreviewProps) {
     body { margin: 0; background: ${settings.customColors.bg}; }
   </style>
 </head>
-<body>${block.html}</body>
+<body>
+  <div class="elementor elementor-preview">
+    <div class="elementor-section">
+      <div class="elementor-widget-html">
+        ${block.html}
+      </div>
+    </div>
+  </div>
+</body>
 </html>`;
 
   return (

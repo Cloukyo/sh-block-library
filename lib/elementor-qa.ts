@@ -9,12 +9,27 @@ export type ElementorQaIssue = {
 const genericSelectors = ["body", "html", "main", "section", "article", "h1", "h2", "h3", "p", "a", "img"];
 const genericClasses = ["container", "button", "card", "hero", "section"];
 const approvedPrefixes = ["sh-", "ng-", "dy-", "sm-"];
+const allowedExternalPrefixes = ["elementor"];
 const stagingPatterns = ["sg-host.com", "staging", "localhost", "127.0.0.1"];
 const placeholderPatterns = ["placehold.co", "placeholder", "dummyimage", "picsum.photos", "unsplash.it"];
 
-export function analyzeElementorQa({ html, css, category }: { html: string; css: string; category?: BlockCategory }) {
+export function analyzeElementorQa({ html, css, category, combinedCode }: { html: string; css: string; category?: BlockCategory; combinedCode?: string }) {
   const issues: ElementorQaIssue[] = [];
+  const combined = combinedCode ?? `${html}\n<style>\n${css}\n</style>`;
   const imageUrls = collectUrls(`${html}\n${css}`);
+  const emptyImageSources = collectEmptyImageSources(html);
+
+  if (!html.trim()) {
+    issues.push({ severity: "review", title: "Missing HTML", detail: "Combined export should include the block HTML before pasting into Elementor." });
+  }
+
+  if (!css.trim()) {
+    issues.push({ severity: "review", title: "Missing CSS", detail: "Combined export should include CSS inside a style tag." });
+  }
+
+  if (!/<style\b[\s\S]*<\/style>/i.test(combined)) {
+    issues.push({ severity: "review", title: "Missing style tag", detail: "Combined Elementor exports should include a style tag for the CSS." });
+  }
 
   for (const selector of genericSelectors) {
     if (hasGenericSelector(css, selector)) {
@@ -36,7 +51,7 @@ export function analyzeElementorQa({ html, css, category }: { html: string; css:
     }
   }
 
-  if (/^\s*@import\s+/im.test(css)) {
+  if (category !== "Global Foundation" && /^\s*@import\s+/im.test(css)) {
     issues.push({ severity: "warning", title: "@import in block CSS", detail: "Font imports should live in the foundation CSS, not section-specific CSS." });
   }
 
@@ -69,6 +84,10 @@ export function analyzeElementorQa({ html, css, category }: { html: string; css:
     }
   });
 
+  emptyImageSources.forEach((source) => {
+    issues.push({ severity: "warning", title: "Empty image source", detail: `${source} should be replaced with a final image URL before publishing.` });
+  });
+
   if (/<a\b[^>]*href=(["'])#\1/i.test(html) || /<a\b(?=[^>]*href=#)/i.test(html)) {
     issues.push({ severity: "warning", title: "Placeholder link", detail: "One or more links use href=\"#\". Replace with final URLs." });
   }
@@ -85,8 +104,21 @@ export function analyzeElementorQa({ html, css, category }: { html: string; css:
     issues.push({ severity: "warning", title: "No responsive CSS detected", detail: "No media query, clamp(), min(), max() or responsive grid rule was found." });
   }
 
+  const unapprovedClasses = getUnapprovedCssClasses(css);
+  if (unapprovedClasses.length) {
+    issues.push({
+      severity: "review",
+      title: "Unapproved class prefix",
+      detail: `CSS class selectors should use sh-, ng-, dy- or sm-. Review: ${unapprovedClasses.slice(0, 6).join(", ")}${unapprovedClasses.length > 6 ? "..." : ""}`
+    });
+  }
+
   if (!usesApprovedPrefix(`${html}\n${css}`)) {
     issues.push({ severity: "review", title: "No approved prefix found", detail: "Use classes prefixed with sh-, ng-, dy- or sm- to reduce Elementor/theme collisions." });
+  }
+
+  if (/\b(?:flex|grid|hidden|block|inline-flex|items-center|justify-center|rounded|px-\d|py-\d|text-\w+|bg-\w+):|next\/image|data-nextjs|__next/i.test(`${html}\n${css}`)) {
+    issues.push({ severity: "warning", title: "Possible app-only dependency", detail: "Check this export does not rely on the block library app, Tailwind utilities or Next.js-only markup." });
   }
 
   return {
@@ -112,7 +144,11 @@ function getQaStatus(issues: ElementorQaIssue[]): ElementorQaStatus {
 }
 
 function hasGenericSelector(css: string, selector: string) {
-  return new RegExp(`(^|[}\\s,])${selector}(?=[\\s,{:.#\\[])`, "i").test(css);
+  return css
+    .split("{")
+    .slice(0, -1)
+    .flatMap((chunk) => chunk.split("}").pop()?.split(",") ?? [])
+    .some((candidate) => new RegExp(`^${selector}(?=[\\s:.#\\[]|$)`, "i").test(candidate.trim()));
 }
 
 function collectUrls(value: string) {
@@ -124,10 +160,25 @@ function collectUrls(value: string) {
   return urls.filter((url) => /^https?:\/\//i.test(url));
 }
 
+function collectEmptyImageSources(html: string) {
+  return Array.from(html.matchAll(/\bsrc=(["'])(.*?)\1/gi))
+    .map((match) => match[0])
+    .filter((source) => /src=(["'])\s*\1/i.test(source));
+}
+
 function hasResponsiveCss(css: string) {
   return /@media|clamp\(|min\(|max\(|auto-fit|auto-fill|grid-template-columns\s*:\s*repeat\(/i.test(css);
 }
 
 function usesApprovedPrefix(value: string) {
   return approvedPrefixes.some((prefix) => value.includes(prefix));
+}
+
+function getUnapprovedCssClasses(css: string) {
+  const classes = Array.from(css.matchAll(/\.(-?[_a-zA-Z]+[_a-zA-Z0-9-]*)/g))
+    .map((match) => match[1])
+    .filter((className) => !approvedPrefixes.some((prefix) => className.startsWith(prefix)))
+    .filter((className) => !allowedExternalPrefixes.some((prefix) => className === prefix || className.startsWith(`${prefix}-`)));
+
+  return Array.from(new Set(classes));
 }

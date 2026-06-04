@@ -34,10 +34,10 @@ type PageAssemblyProps = {
   onSettingsChange: (settings: DesignSettings) => void;
 };
 
-type AssemblyTab = "Preview" | "Full Page Standalone" | "Lean Page" | "Foundation Only" | "HTML Only" | "CSS Only";
+type AssemblyTab = "Preview" | "Full Page Assembly" | "Lean Page" | "Foundation Only" | "HTML Only" | "CSS Only";
 type AssemblyViewport = "desktop" | "tablet" | "mobile";
 
-const tabs: AssemblyTab[] = ["Preview", "Full Page Standalone", "Lean Page", "Foundation Only", "HTML Only", "CSS Only"];
+const tabs: AssemblyTab[] = ["Preview", "Full Page Assembly", "Lean Page", "Foundation Only", "HTML Only", "CSS Only"];
 
 const viewportConfig: Record<AssemblyViewport, { label: string; width: number; height: number }> = {
   desktop: { label: "Desktop", width: 1200, height: 780 },
@@ -363,7 +363,7 @@ export function PageAssembly({ allBlocks, assemblyIds, settings, onAssemblyChang
               <p className="text-xs font-bold uppercase tracking-[0.18em] text-bronze">Page Assembly</p>
               <h2 className="mt-1 text-2xl font-semibold text-ink">Build a reusable Elementor page template</h2>
               <p className="mt-2 max-w-3xl text-sm leading-6 text-[#6d675f]">
-                Use Full Page Standalone when testing a complete page in Elementor. Use Foundation Only when you want to paste shared styling once.
+                Use Page Assembly export when building a complete page. Use Foundation Only when you want to paste shared styling once.
                 Use Lean Page when the foundation CSS is already loaded. For the cleanest Elementor workflow, paste Foundation Only once, then paste individual Lean Combined blocks section by section.
               </p>
             </div>
@@ -584,11 +584,11 @@ export function PageAssembly({ allBlocks, assemblyIds, settings, onAssemblyChang
               ))}
             </div>
             <div className="flex flex-wrap gap-2">
-              <CopyButton label="Copy Full Page Standalone" textToCopy={standaloneCode} variant="primary" />
+              <CopyButton label="Copy Full Page Combined" textToCopy={standaloneCode} variant="primary" />
+              <CopyButton label="Copy Full Page HTML" textToCopy={fullPageHtml} />
+              <CopyButton label="Copy Full Page CSS" textToCopy={standaloneCss} />
               <CopyButton label="Copy Lean Page" textToCopy={leanCode} />
               <CopyButton label="Copy Foundation Only" textToCopy={foundationOnlyCode} />
-              <CopyButton label="Copy HTML Only" textToCopy={fullPageHtml} />
-              <CopyButton label="Copy CSS Only" textToCopy={cssOnlyCode} />
             </div>
           </div>
           <div className="p-4">
@@ -657,7 +657,15 @@ function FullPagePreview({ html, css, settings, viewport }: { html: string; css:
     body { margin: 0; background: ${settings.customColors.bg}; }
   </style>
 </head>
-<body>${html || "<main style='padding:40px;font-family:Arial,sans-serif;color:#555'>Add blocks to preview a full page.</main>"}</body>
+<body>
+  <div class="elementor elementor-preview">
+    <div class="elementor-section">
+      <div class="elementor-widget-html">
+        ${html || "<main style='padding:40px;font-family:Arial,sans-serif;color:#555'>Add blocks to preview a full page.</main>"}
+      </div>
+    </div>
+  </div>
+</body>
 </html>`;
 
   return (

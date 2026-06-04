@@ -1,4 +1,4 @@
-import { createLeanCss, foundationPresets, getBlockFoundationId, getFoundationCss } from "@/lib/foundation-presets";
+import { foundationPresets, getBlockFoundationId, getFoundationCss, getLeanBlockCss } from "@/lib/foundation-presets";
 import { ASSEMBLY_STORAGE_KEY } from "@/lib/local-blocks";
 import type { Block, BlockStatus, DesignSettings, FoundationId, PageTemplate, PageTemplateChecklist } from "@/types/block";
 
@@ -330,9 +330,9 @@ export function getFoundationOnlyCss(foundationId: FoundationId, settings: Desig
 export function getPageBlockCss(selectedBlocks: Block[], lean = false) {
   const seen = new Set<string>();
   const chunks = selectedBlocks.flatMap((block) =>
-    block.css
+    (lean ? getLeanBlockCss(block.css, getBlockFoundationId(block)) : block.css)
       .split(/\n\s*\n/)
-      .map((chunk) => (lean ? createLeanCss(chunk) : chunk.trim()))
+      .map((chunk) => chunk.trim())
       .filter(Boolean)
       .map((chunk) => ({ block, chunk }))
   );
@@ -354,7 +354,7 @@ export function getFullPageCss(selectedBlocks: Block[], settings: DesignSettings
     .map((foundationId, index) => (index === 0 ? getFoundationCss(foundationId, settings) : foundationPresets[foundationId]?.css.trim()))
     .filter(Boolean)
     .join("\n\n");
-  const blockCss = getPageBlockCss(selectedBlocks);
+  const blockCss = getPageBlockCss(selectedBlocks, true);
   return [foundationCss, blockCss].filter(Boolean).join("\n\n");
 }
 

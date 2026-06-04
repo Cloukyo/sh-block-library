@@ -8,7 +8,114 @@ export type FoundationPreset = {
   removeFromBlockCss: string[];
 };
 
-export const shFoundationCss = ``;
+export const shFoundationCss = `.sh-section {
+  background: var(--sh-bg);
+  color: var(--sh-text);
+  font-family: var(--sh-font-body);
+  padding: var(--sh-section-padding);
+}
+
+.sh-shell {
+  max-width: var(--sh-container);
+  margin: 0 auto;
+}
+
+.sh-eyebrow {
+  margin: 0 0 14px;
+  color: var(--sh-accent);
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  line-height: 1.35;
+  text-transform: uppercase;
+}
+
+.sh-title {
+  margin: 0;
+  color: var(--sh-heading);
+  font-family: var(--sh-font-heading);
+  font-size: clamp(34px, 5vw, 64px);
+  font-weight: 600;
+  letter-spacing: 0;
+  line-height: 1.04;
+}
+
+.sh-copy {
+  margin: 18px 0 0;
+  color: var(--sh-text);
+  font-size: 16px;
+  line-height: 1.75;
+}
+
+.sh-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 30px;
+}
+
+.sh-button,
+.sh-button-outline {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 48px;
+  border-radius: var(--sh-radius);
+  font-family: var(--sh-font-body);
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-decoration: none;
+  text-transform: uppercase;
+}
+
+.sh-button {
+  border: 1px solid var(--sh-button-border);
+  background: var(--sh-button-bg);
+  color: var(--sh-button-text);
+  padding: 14px 24px;
+}
+
+.sh-button-outline {
+  border: 1px solid var(--sh-accent);
+  background: transparent;
+  color: var(--sh-accent);
+  padding: 14px 24px;
+}
+
+.sh-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 18px;
+}
+
+.sh-card,
+.sh-panel {
+  border: 1px solid var(--sh-accent-soft);
+  background: var(--sh-surface);
+}
+
+.sh-card {
+  padding: clamp(22px, 3vw, 34px);
+}
+
+.sh-panel {
+  padding: clamp(28px, 4vw, 52px);
+}
+
+@media (max-width: 820px) {
+  .sh-section {
+    padding: 64px 20px;
+  }
+
+  .sh-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .sh-actions {
+    display: grid;
+  }
+}`;
 
 const nikitaBaseFoundationCss = `.ng-eyebrow {
   margin: 0 0 22px;
@@ -706,7 +813,11 @@ export function getFoundationCss(foundationId: FoundationId, settings: DesignSet
 }
 
 export function getFullCss(css: string, settings: DesignSettings, foundationId: FoundationId) {
-  return [getFoundationCss(foundationId, settings), css.trim()].filter(Boolean).join("\n\n");
+  return [getFoundationCss(foundationId, settings), getLeanBlockCss(css, foundationId)].filter(Boolean).join("\n\n");
+}
+
+export function getLeanBlockCss(css: string, foundationId: FoundationId) {
+  return stripFoundationCss(css, foundationId);
 }
 
 export function createStandaloneCombinedCode(html: string, css: string, settings: DesignSettings, foundationId: FoundationId) {
@@ -717,11 +828,11 @@ ${getFullCss(css, settings, foundationId)}
 </style>`;
 }
 
-export function createLeanCombinedCode(html: string, css: string) {
+export function createLeanCombinedCode(html: string, css: string, foundationId?: FoundationId) {
   return `${html.trim()}
 
 <style>
-${createLeanCss(css)}
+${foundationId ? getLeanBlockCss(css, foundationId) : createLeanCss(css)}
 </style>`;
 }
 
