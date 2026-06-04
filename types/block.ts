@@ -49,7 +49,7 @@ export type Block = {
   elementorQaStatus?: ElementorQaStatus;
 };
 
-export type FoundationId = "sh-foundation" | "nikita-foundation" | "dy-foundation" | "sm-foundation";
+export type FoundationId = "sh-foundation" | "nikita-foundation" | "dy-foundation" | "sm-foundation" | "scaraid-foundation";
 
 export type UserBlock = Block & {
   createdAt: string;

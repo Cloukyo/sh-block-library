@@ -751,6 +751,611 @@ export const samimFoundationCss = `.sm-section {
   }
 }`;
 
+export const scaraidFoundationCss = `@import url("https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700&family=Inter:wght@400;500;600;700&display=swap");
+
+.scaraid-section,
+.scaraid-hero,
+.scaraid-header,
+.scaraid-footer {
+  --scaraid-bg: #ffffff;
+  --scaraid-surface: #f3f4f5;
+  --scaraid-text: #171717;
+  --scaraid-muted: #72757c;
+  --scaraid-border: #e3e5e8;
+  --scaraid-blue: #0056b3;
+  --scaraid-radius-lg: 48px;
+  background: var(--scaraid-bg);
+  color: var(--scaraid-text);
+  font-family: Inter, Arial, sans-serif;
+}
+
+.scaraid-container {
+  width: min(100% - 48px, 1320px);
+  margin: 0 auto;
+}
+
+.scaraid-section {
+  padding: 70px 0;
+}
+
+.scaraid-logo {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-family: Geist, Arial, sans-serif;
+  font-size: 20px;
+  font-weight: 650;
+  letter-spacing: 0;
+  text-decoration: none;
+}
+
+.scaraid-logo__mark {
+  width: 34px;
+  height: 34px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  color: #ffffff;
+  background: linear-gradient(135deg, #111111, #0056b3);
+  font-size: 17px;
+}
+
+.scaraid-button {
+  display: inline-flex;
+  min-height: 44px;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  padding: 0 24px;
+  border: 1px solid transparent;
+  font-size: 13px;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.scaraid-button--dark {
+  background: var(--scaraid-text);
+  color: #ffffff;
+}
+
+.scaraid-button--outline {
+  border-color: rgba(23, 23, 23, 0.18);
+  background: rgba(255, 255, 255, 0.7);
+  color: var(--scaraid-text);
+}
+
+.scaraid-button-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+}
+
+.scaraid-header {
+  border-bottom: 1px solid rgba(227, 229, 232, 0.75);
+}
+
+.scaraid-header__inner {
+  min-height: 78px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 28px;
+}
+
+.scaraid-nav {
+  display: flex;
+  gap: 34px;
+  color: #303236;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.scaraid-nav a,
+.scaraid-footer a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.scaraid-hero {
+  padding: 44px 0 70px;
+}
+
+.scaraid-hero__panel {
+  min-height: 650px;
+  overflow: hidden;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: stretch;
+  border-radius: var(--scaraid-radius-lg);
+  background: var(--scaraid-surface);
+}
+
+.scaraid-hero__copy {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 72px;
+}
+
+.scaraid-hero h1,
+.scaraid-intro h2,
+.scaraid-evidence h2,
+.scaraid-centered-heading,
+.scaraid-faq h2,
+.scaraid-cta h2,
+.scaraid-table-title {
+  margin: 0;
+  font-family: Geist, Arial, sans-serif;
+  font-weight: 550;
+  letter-spacing: 0;
+  line-height: 1.05;
+}
+
+.scaraid-hero h1 {
+  max-width: 650px;
+  font-size: clamp(44px, 6vw, 82px);
+}
+
+.scaraid-hero p {
+  max-width: 560px;
+  margin: 28px 0 36px;
+  color: var(--scaraid-muted);
+  font-size: clamp(18px, 1.8vw, 22px);
+  font-weight: 300;
+}
+
+.scaraid-hero__image,
+.scaraid-evidence__image,
+.scaraid-case-card__image,
+.scaraid-doctor-card__photo {
+  background-position: center;
+  background-size: cover;
+}
+
+.scaraid-hero__image {
+  min-height: 420px;
+  background-image: linear-gradient(135deg, rgba(255,255,255,0.25), rgba(0,86,179,0.08)), var(--scaraid-hero-image);
+}
+
+.scaraid-intro,
+.scaraid-evidence {
+  display: grid;
+  grid-template-columns: 5fr 7fr;
+  gap: 48px 90px;
+  align-items: center;
+}
+
+.scaraid-evidence {
+  grid-template-columns: 1fr 1fr;
+  gap: 84px;
+}
+
+.scaraid-intro h2,
+.scaraid-evidence h2,
+.scaraid-centered-heading,
+.scaraid-faq h2,
+.scaraid-cta h2 {
+  font-size: clamp(34px, 4vw, 52px);
+}
+
+.scaraid-lead {
+  margin: 0;
+  color: var(--scaraid-muted);
+  font-size: clamp(20px, 2.2vw, 28px);
+  font-weight: 300;
+}
+
+.scaraid-lead strong {
+  color: var(--scaraid-text);
+  font-weight: 500;
+}
+
+.scaraid-feature-row {
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 44px;
+  padding-top: 46px;
+  border-top: 1px solid var(--scaraid-border);
+}
+
+.scaraid-feature-row h3,
+.scaraid-footer h3 {
+  margin: 0 0 14px;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.scaraid-feature-row p,
+.scaraid-doctor-card p,
+.scaraid-steps p,
+.scaraid-footer p {
+  margin: 0;
+  color: var(--scaraid-muted);
+  font-size: 14px;
+}
+
+.scaraid-centered-heading {
+  margin: 0 auto 44px;
+  max-width: 850px;
+  text-align: center;
+}
+
+.scaraid-doctor-grid,
+.scaraid-case-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 28px;
+}
+
+.scaraid-doctor-card {
+  display: grid;
+  grid-template-columns: 170px 1fr;
+  gap: 30px;
+  align-items: center;
+  padding: 34px;
+  border-radius: 36px;
+  background: var(--scaraid-surface);
+}
+
+.scaraid-doctor-card__photo {
+  width: 170px;
+  aspect-ratio: 1;
+  border-radius: 50%;
+}
+
+.scaraid-doctor-card h3 {
+  margin: 0;
+  font-family: Geist, Arial, sans-serif;
+  font-size: 26px;
+}
+
+.scaraid-doctor-card__role {
+  color: var(--scaraid-blue) !important;
+  font-weight: 700;
+  margin: 4px 0 12px !important;
+}
+
+.scaraid-small {
+  margin-bottom: 18px !important;
+  font-size: 12px !important;
+}
+
+.scaraid-table-title {
+  margin-bottom: 60px;
+  text-align: center;
+  font-size: clamp(34px, 4.5vw, 56px);
+}
+
+.scaraid-comparison-table {
+  position: relative;
+  display: grid;
+  border-bottom: 1px solid var(--scaraid-border);
+}
+
+.scaraid-comparison-table::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 37.5%;
+  width: 14.5%;
+  border-radius: 18px 18px 0 0;
+  background: linear-gradient(180deg, #f5f5f5 0%, rgba(245,245,245,0.2) 100%);
+}
+
+.scaraid-table-row {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: 37.5% 14.5% 16% 32%;
+  min-height: 78px;
+  align-items: center;
+  border-top: 1px solid var(--scaraid-border);
+}
+
+.scaraid-table-row > div {
+  padding: 20px 24px;
+  color: #303236;
+  font-size: 16px;
+}
+
+.scaraid-table-row > div:last-child {
+  color: #7a7d84;
+}
+
+.scaraid-table-row--header {
+  min-height: 88px;
+  border-top: 0;
+}
+
+.scaraid-table-brand {
+  text-align: center;
+}
+
+.scaraid-table-brand span {
+  display: inline-flex;
+  min-height: 30px;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  background: #111111;
+  color: #ffffff;
+  padding: 0 18px;
+  font-size: 15px;
+  font-weight: 750;
+}
+
+.scaraid-check,
+.scaraid-no {
+  text-align: center;
+}
+
+.scaraid-check span,
+.scaraid-no span {
+  display: inline-grid;
+  width: 24px;
+  height: 24px;
+  place-items: center;
+  border-radius: 50%;
+}
+
+.scaraid-check span {
+  background: #626262;
+  color: #ffffff;
+  font-weight: 800;
+}
+
+.scaraid-no span {
+  color: #a8aaae;
+  font-size: 23px;
+}
+
+.scaraid-show-more {
+  display: flex;
+  margin: 34px auto 0;
+  min-height: 52px;
+  align-items: center;
+  justify-content: center;
+  border: 0;
+  border-radius: 999px;
+  padding: 0 34px;
+  background: #f0f0f0;
+  color: #232323;
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.scaraid-chip-row {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 12px;
+  max-width: 980px;
+  margin: 0 auto;
+}
+
+.scaraid-chip-row span {
+  border: 1px solid rgba(227,229,232,0.8);
+  border-radius: 999px;
+  background: var(--scaraid-surface);
+  padding: 13px 22px;
+  font-size: 14px;
+  font-weight: 650;
+}
+
+.scaraid-evidence__image {
+  min-height: 340px;
+  border-radius: 38px;
+  background-image: linear-gradient(135deg, rgba(255,255,255,0.12), rgba(0,86,179,0.04)), var(--scaraid-evidence-image);
+}
+
+.scaraid-steps {
+  display: grid;
+  gap: 30px;
+  margin-top: 36px;
+}
+
+.scaraid-steps article {
+  display: grid;
+  grid-template-columns: 44px 1fr;
+  gap: 18px;
+}
+
+.scaraid-steps span {
+  color: var(--scaraid-blue);
+  font-family: Geist, Arial, sans-serif;
+  font-size: 19px;
+  font-weight: 750;
+}
+
+.scaraid-steps h3 {
+  margin: 0 0 6px;
+  font-size: 17px;
+}
+
+.scaraid-case-card {
+  overflow: hidden;
+  border-radius: 38px;
+  background: var(--scaraid-surface);
+}
+
+.scaraid-case-card__image {
+  min-height: 360px;
+}
+
+.scaraid-case-card__body {
+  padding: 38px;
+}
+
+.scaraid-case-card p {
+  margin: 0 0 28px;
+  font-size: 19px;
+  font-style: italic;
+  font-weight: 300;
+}
+
+.scaraid-case-card__body div {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+}
+
+.scaraid-case-card span,
+.scaraid-case-card a {
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.scaraid-faq {
+  max-width: 820px;
+}
+
+.scaraid-faq h2 {
+  margin-bottom: 44px;
+  text-align: center;
+}
+
+.scaraid-faq details {
+  border-bottom: 1px solid var(--scaraid-border);
+}
+
+.scaraid-faq summary {
+  cursor: pointer;
+  list-style: none;
+  display: flex;
+  justify-content: space-between;
+  gap: 24px;
+  padding: 24px 0;
+  font-size: 18px;
+  font-weight: 650;
+}
+
+.scaraid-faq summary::after {
+  content: "+";
+  color: var(--scaraid-muted);
+}
+
+.scaraid-faq details[open] summary::after {
+  content: "-";
+}
+
+.scaraid-faq p {
+  margin: 0;
+  padding: 0 0 26px;
+  color: var(--scaraid-muted);
+}
+
+.scaraid-cta {
+  display: grid;
+  justify-items: center;
+  gap: 22px;
+  padding: 72px 34px;
+  border-radius: var(--scaraid-radius-lg);
+  background: var(--scaraid-surface);
+  text-align: center;
+}
+
+.scaraid-cta p {
+  margin: 0;
+  color: var(--scaraid-muted);
+  font-size: 19px;
+}
+
+.scaraid-footer {
+  border-top: 1px solid var(--scaraid-border);
+  padding: 60px 0 34px;
+}
+
+.scaraid-footer__grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 2fr;
+  gap: 48px;
+}
+
+.scaraid-footer a:not(.scaraid-logo) {
+  display: block;
+  margin: 0 0 10px;
+  color: var(--scaraid-muted);
+  font-size: 14px;
+}
+
+.scaraid-footer__bottom {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+  margin-top: 52px;
+  padding-top: 24px;
+  border-top: 1px solid rgba(227,229,232,0.7);
+  color: var(--scaraid-muted);
+  font-size: 12px;
+}
+
+@media (max-width: 980px) {
+  .scaraid-container {
+    width: min(100% - 32px, 1320px);
+  }
+
+  .scaraid-nav {
+    display: none;
+  }
+
+  .scaraid-hero__panel,
+  .scaraid-intro,
+  .scaraid-evidence,
+  .scaraid-doctor-grid,
+  .scaraid-case-grid,
+  .scaraid-footer__grid,
+  .scaraid-feature-row {
+    grid-template-columns: 1fr;
+  }
+
+  .scaraid-hero__copy {
+    padding: 46px 30px;
+  }
+
+  .scaraid-doctor-card {
+    grid-template-columns: 1fr;
+    justify-items: center;
+    text-align: center;
+  }
+
+  .scaraid-comparison-table {
+    overflow-x: auto;
+  }
+
+  .scaraid-comparison-table::before {
+    display: none;
+  }
+
+  .scaraid-table-row {
+    min-width: 880px;
+  }
+}
+
+@media (max-width: 640px) {
+  .scaraid-header .scaraid-button {
+    display: none;
+  }
+
+  .scaraid-section {
+    padding: 48px 0;
+  }
+
+  .scaraid-case-card__body div,
+  .scaraid-footer__bottom {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+}`;
+
 export const foundationPresets: Record<FoundationId, FoundationPreset> = {
   "sh-foundation": {
     id: "sh-foundation",
@@ -775,6 +1380,12 @@ export const foundationPresets: Record<FoundationId, FoundationPreset> = {
     name: "Samim Foundation",
     css: samimFoundationCss,
     removeFromBlockCss: [samimFoundationCss]
+  },
+  "scaraid-foundation": {
+    id: "scaraid-foundation",
+    name: "ScarAid Foundation",
+    css: scaraidFoundationCss,
+    removeFromBlockCss: [scaraidFoundationCss]
   }
 };
 
@@ -789,6 +1400,10 @@ export function getBlockFoundationId(block: { foundationId?: FoundationId; clien
 
   if (block.client === "Dominic" || block.style === "DY Skin Clinic") {
     return "dy-foundation";
+  }
+
+  if (block.client === "ScarAid" || block.style === "ScarAid Clinical") {
+    return "scaraid-foundation";
   }
 
   return "sh-foundation";

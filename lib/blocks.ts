@@ -2,6 +2,7 @@ import type { Block } from "@/types/block";
 import { dyBlocks } from "./dy-blocks";
 import { nikitaBlocks } from "./nikita-blocks";
 import { samimBlocks } from "./samim-blocks";
+import { scaraidBlocks } from "./scaraid-blocks";
 
 const genericBlocks: Block[] = [
   {
@@ -186,4 +187,4 @@ const genericBlocks: Block[] = [
   }
 ];
 
-export const blocks: Block[] = [...genericBlocks, ...nikitaBlocks, ...dyBlocks, ...samimBlocks];
+export const blocks: Block[] = [...genericBlocks, ...nikitaBlocks, ...dyBlocks, ...samimBlocks, ...scaraidBlocks];
