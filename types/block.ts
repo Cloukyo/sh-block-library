@@ -91,6 +91,9 @@ export type PageTemplate = {
   foundationId: FoundationId;
   blockIds: string[];
   tags: string[];
+  slug?: string;
+  pageTitle?: string;
+  metaDescription?: string;
   status: BlockStatus;
   checklist: PageTemplateChecklist;
   createdAt: string;

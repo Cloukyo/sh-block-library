@@ -22,6 +22,139 @@ const statuses: BlockStatus[] = ["Draft", "Needs Review", "Elementor Tested", "A
 
 export const pageTemplates: PageTemplate[] = [
   createBuiltInTemplate({
+    id: "scaraid-home",
+    name: "ScarAid Home",
+    description: "Homepage assembly for the ScarAid six-page website template.",
+    sourceProject: "ScarAid Website Template",
+    foundationId: "scaraid-foundation",
+    tags: ["scaraid", "page-template", "home"],
+    slug: "/",
+    pageTitle: "ScarAid | Consultant-Led Scar Optimisation",
+    metaDescription: "Consultant-led ScarAid scar optimisation for planned surgery, wound support and scar maturation.",
+    blockIds: [
+      "scaraid-header",
+      "scaraid-animation-script",
+      "scaraid-home-hero",
+      "scaraid-home-process-overview",
+      "scaraid-home-comparison-table",
+      "scaraid-home-surgeon-cards",
+      "scaraid-home-scar-type-pills",
+      "scaraid-home-patient-journeys",
+      "scaraid-home-faq",
+      "scaraid-consultation-form",
+      "scaraid-footer"
+    ]
+  }),
+  createBuiltInTemplate({
+    id: "scaraid-process",
+    name: "ScarAid Process",
+    description: "Process page assembly for the ScarAid six-page website template.",
+    sourceProject: "ScarAid Website Template",
+    foundationId: "scaraid-foundation",
+    tags: ["scaraid", "page-template", "process"],
+    slug: "/process/",
+    pageTitle: "The ScarAid Process | Consultant-Led Scar Optimisation",
+    metaDescription: "A structured, consultant-led pathway designed to support scar outcomes before, around and after surgery.",
+    blockIds: [
+      "scaraid-header",
+      "scaraid-animation-script",
+      "scaraid-process-hero",
+      "scaraid-process-intro",
+      "scaraid-process-timeline",
+      "scaraid-process-tailored-variables",
+      "scaraid-consultation-form",
+      "scaraid-footer"
+    ]
+  }),
+  createBuiltInTemplate({
+    id: "scaraid-evidence",
+    name: "ScarAid Evidence",
+    description: "Evidence page assembly for the ScarAid six-page website template.",
+    sourceProject: "ScarAid Website Template",
+    foundationId: "scaraid-foundation",
+    tags: ["scaraid", "page-template", "evidence"],
+    slug: "/evidence/",
+    pageTitle: "Evidence | ScarAid Clinical Scar Management",
+    metaDescription: "Evidence-informed ScarAid scar management built around wound healing, skin science and clinician-led review.",
+    blockIds: [
+      "scaraid-header",
+      "scaraid-animation-script",
+      "scaraid-evidence-hero",
+      "scaraid-evidence-biology-intro",
+      "scaraid-evidence-categories",
+      "scaraid-evidence-comparison",
+      "scaraid-consultation-form",
+      "scaraid-footer"
+    ]
+  }),
+  createBuiltInTemplate({
+    id: "scaraid-case-studies",
+    name: "ScarAid Case Studies",
+    description: "Case studies page assembly for the ScarAid six-page website template.",
+    sourceProject: "ScarAid Website Template",
+    foundationId: "scaraid-foundation",
+    tags: ["scaraid", "page-template", "case-studies"],
+    slug: "/case-studies/",
+    pageTitle: "Case Studies | ScarAid",
+    metaDescription: "Placeholder ScarAid case-study structure for documenting patient journeys after approved clinical content is available.",
+    blockIds: [
+      "scaraid-header",
+      "scaraid-animation-script",
+      "scaraid-cases-hero",
+      "scaraid-cases-intro",
+      "scaraid-case-filters",
+      "scaraid-case-grid",
+      "scaraid-case-includes",
+      "scaraid-case-disclaimer",
+      "scaraid-consultation-form",
+      "scaraid-footer"
+    ]
+  }),
+  createBuiltInTemplate({
+    id: "scaraid-about",
+    name: "ScarAid About",
+    description: "About page assembly for the ScarAid six-page website template.",
+    sourceProject: "ScarAid Website Template",
+    foundationId: "scaraid-foundation",
+    tags: ["scaraid", "page-template", "about"],
+    slug: "/about/",
+    pageTitle: "About ScarAid | Consultant-Led Scar Optimisation",
+    metaDescription: "ScarAid was created by consultant plastic surgeons as a structured, evidence-informed approach to scar optimisation.",
+    blockIds: [
+      "scaraid-header",
+      "scaraid-animation-script",
+      "scaraid-about-hero",
+      "scaraid-about-origin",
+      "scaraid-about-surgeon-profiles",
+      "scaraid-about-approach-cards",
+      "scaraid-about-membership-strip",
+      "scaraid-about-innovation",
+      "scaraid-consultation-form",
+      "scaraid-footer"
+    ]
+  }),
+  createBuiltInTemplate({
+    id: "scaraid-contact",
+    name: "ScarAid Contact",
+    description: "Contact page assembly for the ScarAid six-page website template.",
+    sourceProject: "ScarAid Website Template",
+    foundationId: "scaraid-foundation",
+    tags: ["scaraid", "page-template", "contact"],
+    slug: "/contact/",
+    pageTitle: "Request a Consultation | ScarAid",
+    metaDescription: "Request a ScarAid consultation for planned surgery, recent procedures or existing scar concerns.",
+    blockIds: [
+      "scaraid-header",
+      "scaraid-animation-script",
+      "scaraid-contact-hero",
+      "scaraid-main-enquiry-panel",
+      "scaraid-contact-clinical-focus",
+      "scaraid-contact-context-cards",
+      "scaraid-contact-medical-disclaimer",
+      "scaraid-footer"
+    ]
+  }),
+  createBuiltInTemplate({
     id: "nikita-home",
     name: "Nikita Home",
     description: "Homepage assembly for the Nikita Grover staging site.",
@@ -157,6 +290,9 @@ type CreateTemplateInput = {
   sourceProject?: string;
   foundationId?: FoundationId;
   tags?: string[];
+  slug?: string;
+  pageTitle?: string;
+  metaDescription?: string;
 };
 
 function createBuiltInTemplate(input: CreateTemplateInput): PageTemplate {
@@ -169,6 +305,9 @@ function createBuiltInTemplate(input: CreateTemplateInput): PageTemplate {
     foundationId: input.foundationId ?? "nikita-foundation",
     blockIds: input.blockIds,
     tags: input.tags ?? ["nikita", "page-template"],
+    slug: input.slug,
+    pageTitle: input.pageTitle,
+    metaDescription: input.metaDescription,
     status: "Needs Review",
     checklist: defaultPageTemplateChecklist,
     createdAt: now,
@@ -198,6 +337,9 @@ export function normalizePageTemplate(template: unknown): PageTemplate | null {
     foundationId: normalizeFoundationId(template.foundationId),
     blockIds: template.blockIds.filter((id): id is string => typeof id === "string"),
     tags: Array.isArray(template.tags) ? template.tags.filter((tag): tag is string => typeof tag === "string") : [],
+    slug: typeof template.slug === "string" ? template.slug : undefined,
+    pageTitle: typeof template.pageTitle === "string" ? template.pageTitle : undefined,
+    metaDescription: typeof template.metaDescription === "string" ? template.metaDescription : undefined,
     status: statuses.includes(template.status as BlockStatus) ? (template.status as BlockStatus) : "Draft",
     checklist: {
       ...defaultPageTemplateChecklist,
